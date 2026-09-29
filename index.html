@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Octubre de Terror</title>
+<meta name="description" content="Nuestra bitácora de terror: 31 noches, 31 películas.">
+<meta name="theme-color" content="#f5f5f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Octubre">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f5f3; --paper:#ffffff; --ink:#161514; --muted:#7a766f; --faint:#a9a59e;
+  --line:#e4e2dc; --soft:#ecebe7;
+  --blood:#9e2a20; --blood-soft:#f3e3df;
+  --a:#9e2a20; --a-soft:#f3e3df;
+  --b:#b8641c; --b-soft:#f6e9dc;
+  --both:#4a4a66; --both-soft:#e7e7ef;
+  --ok:#3f6b46;
+  --serif:"Instrument Serif", "Times New Roman", serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --r:14px;
+  --shadow:0 1px 2px rgba(20,18,16,.04), 0 6px 20px rgba(20,18,16,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121110; --paper:#1b1a18; --ink:#efece6; --muted:#9a958c; --faint:#6c685f;
+    --line:#2b2926; --soft:#23211e;
+    --blood:#d9574a; --blood-soft:#3a1f1b;
+    --a:#e0675a; --a-soft:#3a1f1b;
+    --b:#e39a54; --b-soft:#3a2a1a;
+    --both:#a5a5d6; --both-soft:#2a2a3a;
+    --ok:#7fb487;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
+  min-height:100dvh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+
+/* Header */
+header.top{padding:calc(env(safe-area-inset-top) + 22px) 0 6px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+h1{font-family:var(--serif);font-weight:400;font-size:46px;line-height:1;margin:6px 0 0;letter-spacing:-.01em}
+h1 em{color:var(--blood)}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05;margin:0}
+h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:0}
+.sub{color:var(--muted);margin:6px 0 0;font-size:14px}
+.icon-btn{border:1px solid var(--line);background:var(--paper);width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;flex:none}
+.icon-btn svg{width:18px;height:18px}
+.rule{height:1px;background:var(--line);margin:18px 0}
+
+/* Section */
+section.view{display:none;animation:fade .25s ease}
+section.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;gap:10px}
+.sec-head .meta{font-size:12px;color:var(--muted);letter-spacing:.04em}
+
+/* Cards */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.stack>*+*{margin-top:10px}
+
+/* Counters */
+.counters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.counter{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.counter .n{font-family:var(--serif);font-size:34px;line-height:1}
+.counter .n small{font-size:18px;color:var(--faint)}
+.counter .l{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:4px}
+.bar{height:3px;background:var(--soft);border-radius:3px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:3px;transition:width .3s}
+.counter.picks .bar i{background:var(--blood)}
+
+/* Forms */
+label.f{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 6px}
+.in{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:12px 12px;font-size:16px;outline:none;appearance:none;-webkit-appearance:none}
+.in:focus{border-color:var(--ink)}
+textarea.in{min-height:96px;resize:vertical;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.row{display:grid;gap:10px}
+.row.two{grid-template-columns:1fr 1fr}
+.row.saga{grid-template-columns:1fr 84px}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:999px;padding:12px 18px;font-weight:500;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.red{background:var(--blood);border-color:var(--blood);color:#fff}
+.btn.block{width:100%}
+.btn:disabled{opacity:.4}
+.btn svg{width:16px;height:16px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns .btn{flex:1}
+
+/* Chips */
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 13px;font-size:13px;white-space:nowrap;color:var(--muted)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Film list */
+.films{list-style:none;margin:0;padding:0}
+.film{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.film:last-child{border-bottom:0}
+.film .num{font-family:var(--serif);font-size:20px;color:var(--faint);width:26px;text-align:right;flex:none}
+.film .body{flex:1;min-width:0}
+.film .t{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.film .m{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;align-items:center}
+.tag{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted)}
+.tag.saga{border-color:var(--blood);color:var(--blood)}
+.star{border:0;background:transparent;width:40px;height:40px;display:grid;place-items:center;color:var(--faint);flex:none;border-radius:50%}
+.star svg{width:22px;height:22px}
+.star.on{color:var(--blood)}
+.star.on svg{fill:currentColor}
+.more{border:0;background:transparent;width:32px;height:40px;color:var(--faint);flex:none}
+.empty{text-align:center;color:var(--muted);padding:28px 10px}
+.empty .big{font-family:var(--serif);font-size:26px;color:var(--ink);margin-bottom:6px}
+
+/* Tab bar */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:saturate(1.4) blur(18px);-webkit-backdrop-filter:saturate(1.4) blur(18px);border-top:1px solid var(--line);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
+nav.tabs .in-tabs{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+nav.tabs button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--faint);padding:6px 0;letter-spacing:.04em}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button.on{color:var(--ink)}
+nav.tabs button.on .dot{opacity:1}
+nav.tabs .dot{width:4px;height:4px;border-radius:50%;background:var(--blood);opacity:0}
+
+/* Partner */
+.person{display:flex;align-items:center;gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:22px;flex:none}
+.av-a{background:var(--a-soft);color:var(--a)}
+.av-b{background:var(--b-soft);color:var(--b)}
+.person .n{font-family:var(--serif);font-size:24px;line-height:1.1}
+.person .s{font-size:12px;color:var(--muted)}
+
+/* Calendar */
+.tonight{position:relative;overflow:hidden}
+.tonight .date{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--blood);font-weight:600}
+.tonight .ft{font-family:var(--serif);font-size:32px;line-height:1.05;margin:6px 0 4px}
+.tonight .fm{font-size:13px;color:var(--muted)}
+.tonight .ghost-n{position:absolute;right:-6px;bottom:-30px;font-family:var(--serif);font-size:150px;line-height:1;color:var(--soft);pointer-events:none;z-index:0}
+.tonight>*{position:relative;z-index:1}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap;margin:12px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:9px;height:9px;border-radius:50%}
+.grid-head,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.grid-head div{text-align:center;font-size:10.5px;letter-spacing:.12em;color:var(--faint);padding:4px 0;text-transform:uppercase}
+.day{aspect-ratio:1/1.32;border-radius:10px;background:var(--paper);border:1px solid var(--line);padding:5px 5px 4px;display:flex;flex-direction:column;
+  text-align:left;overflow:hidden;position:relative}
+.day.blank{background:transparent;border:0}
+.day .d{font-family:var(--serif);font-size:17px;line-height:1}
+.day .mt{font-size:9px;line-height:1.15;color:var(--muted);margin-top:auto;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.day .own{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%}
+.day.today{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink) inset}
+.day.seen{background:var(--soft)}
+.day.seen .mt{text-decoration:line-through;color:var(--faint)}
+.day.halloween{background:var(--blood);border-color:var(--blood);color:#fff}
+.day.halloween .mt{color:rgba(255,255,255,.85)}
+.day.sagal::after{content:"";position:absolute;left:5px;right:5px;bottom:2px;height:2px;border-radius:2px;background:var(--blood);opacity:.55}
+.day.swap-src{outline:2px dashed var(--blood);outline-offset:1px}
+
+.agenda{list-style:none;margin:0;padding:0}
+.agenda li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.agenda .dn{font-family:var(--serif);font-size:28px;width:38px;line-height:1;text-align:right;flex:none}
+.agenda .dw{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);text-align:right}
+.agenda .b{flex:1;min-width:0}
+.agenda .t{font-weight:500}
+.agenda li.seen .t{text-decoration:line-through;color:var(--faint)}
+.agenda .m{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-start;margin-top:2px}
+.agenda .m>*{flex:none}
+.who{flex:none;display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;border-radius:999px;padding:1px 8px;font-weight:600}
+.who.a{background:var(--a-soft);color:var(--a)}
+.who.b{background:var(--b-soft);color:var(--b)}
+.who.both{background:var(--both-soft);color:var(--both)}
+.who.x{background:var(--soft);color:var(--muted)}
+.check{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:transparent;display:grid;place-items:center;flex:none;color:transparent}
+.check.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.check svg{width:15px;height:15px}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(10,9,8,.38);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bg);border-radius:22px 22px 0 0;
+  padding:10px 18px calc(22px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  max-height:90dvh;overflow-y:auto;max-width:560px;margin:0 auto;border:1px solid var(--line);border-bottom:0}
+.sheet.on{transform:none}
+.grab{width:38px;height:4px;border-radius:4px;background:var(--line);margin:0 auto 14px}
+.sheet h2{margin-bottom:4px}
+.opt{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);
+  padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:all .25s;z-index:60;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.note{font-size:13px;color:var(--muted);background:var(--soft);border-radius:12px;padding:12px 14px}
+.note b{color:var(--ink);font-weight:600}
+.center{text-align:center}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.hidden{display:none!important}
+.onboard{min-height:80dvh;display:flex;flex-direction:column;justify-content:center}
+.onboard h1{font-size:58px}
+</style>
+</head>
+<body>
+
+<!-- Onboarding -->
+<div id="onboard" class="wrap onboard hidden">
+  <div class="kicker">Bitácora de terror · Octubre</div>
+  <h1>31 noches,<br><em>31 películas.</em></h1>
+  <p class="sub">Cada uno arma su lista de hasta 31, elige sus 15 favoritas y la app reparte octubre al azar, respetando las sagas.</p>
+  <div class="mt24">
+    <label class="f" for="obName">¿Cómo te llamas?</label>
+    <input id="obName" class="in" placeholder="Tu nombre" autocomplete="given-name">
+  </div>
+  <button id="obGo" class="btn block mt16">Empezar</button>
+</div>
+
+<div id="app" class="hidden">
+  <div class="wrap">
+    <header class="top">
+      <div class="title-row">
+        <div>
+          <div class="kicker" id="kicker">Bitácora de terror · Octubre</div>
+          <h1 id="pageTitle">Mi <em>lista</em></h1>
+        </div>
+        <button class="icon-btn" id="btnSettings" aria-label="Ajustes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- MI LISTA -->
+    <section class="view on" id="v-list">
+      <p class="sub">Apunta hasta 31 películas y marca con la estrella tus 15 elegidas.</p>
+      <div class="counters">
+        <div class="counter"><div class="n" id="cntTotal">0<small>/31</small></div><div class="l">En la lista</div><div class="bar"><i id="barTotal"></i></div></div>
+        <div class="counter picks"><div class="n" id="cntPicks">0<small>/15</small></div><div class="l">Elegidas</div><div class="bar"><i id="barPicks"></i></div></div>
+      </div>
+
+      <div class="sec-head">
+        <h3>Películas</h3>
+        <button class="btn" id="btnAdd" style="padding:9px 15px;font-size:14px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Añadir
+        </button>
+      </div>
+      <div class="chips" id="listFilter">
+        <button class="chip on" data-f="all">Todas</button>
+        <button class="chip" data-f="picks">Elegidas</button>
+        <button class="chip" data-f="rest">Sin elegir</button>
+        <button class="chip" data-f="sagas">Sagas</button>
+      </div>
+      <div class="card mt12" style="padding:2px 12px 2px 6px"><ul class="films" id="myFilms"></ul></div>
+
+      <div class="card mt16">
+        <h3>Enviar a tu pareja</h3>
+        <p class="sub" style="margin-top:4px">Cuando termines (o cada vez que cambies algo), comparte tu código. Tu pareja lo pega en la pestaña <b>Pareja</b>.</p>
+        <button class="btn block mt12" id="btnShareMine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
+          Compartir mi código
+        </button>
+      </div>
+    </section>
+
+    <!-- PAREJA -->
+    <section class="view" id="v-partner">
+      <div id="partnerEmpty">
+        <p class="sub">Pega aquí el código que te envió tu pareja para traer su lista (y el calendario, si ya lo generó).</p>
+      </div>
+      <div id="partnerBox" class="hidden">
+        <div class="card mt16">
+          <div class="person">
+            <div class="avatar av-b" id="pAvatar">?</div>
+            <div><div class="n" id="pName"></div><div class="s" id="pMeta"></div></div>
+          </div>
+        </div>
+        <div class="sec-head"><h3>Sus 15 elegidas</h3><span class="meta" id="pPickCnt"></span></div>
+        <div class="card" style="padding:2px 12px 2px 6px"><ul class="films" id="pFilms"></ul></div>
+        <details class="mt12">
+          <summary class="sub" style="cursor:pointer">Ver el resto de su lista</summary>
+          <div class="card mt8" style="padding:2px 12px 2px 6px"><ul class="films" id="pRest"></ul></div>
+        </details>
+      </div>
+
+      <div class="card mt16">
+        <h3>Importar código</h3>
+        <textarea class="in mt12" id="importBox" placeholder="Pega aquí el código OCT31:…"></textarea>
+        <div class="btns mt12">
+          <button class="btn ghost" id="btnPaste">Pegar</button>
+          <button class="btn" id="btnImport">Importar</button>
+        </div>
+        <p class="hint">Si el código trae un calendario más reciente que el tuyo, se usará ese para que los dos vean lo mismo.</p>
+      </div>
+    </section>
+
+    <!-- CALENDARIO -->
+    <section class="view" id="v-cal">
+      <div id="calEmpty">
+        <p class="sub">Cuando los dos tengan sus 15 elegidas, genera el calendario. Las películas de una misma saga se ven en noches seguidas y en orden.</p>
+        <div class="card mt16" id="calStatus"></div>
+      </div>
+      <div id="calBox" class="hidden">
+        <div class="card tonight mt12" id="tonight"></div>
+        <div class="legend" id="legend"></div>
+        <div class="sec-head"><h3>Octubre <span id="calYear"></span></h3><span class="meta" id="calProgress"></span></div>
+        <div class="grid-head"><div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div></div>
+        <div class="grid" id="grid"></div>
+        <p class="hint" id="swapHint"></p>
+        <div class="sec-head"><h3>Agenda</h3></div>
+        <ul class="agenda" id="agenda"></ul>
+        <div class="btns mt24">
+          <button class="btn ghost" id="btnReroll">Volver a sortear</button>
+          <button class="btn" id="btnShareCal">Compartir calendario</button>
+        </div>
+      </div>
+      <button class="btn red block mt16" id="btnGenerate">Generar calendario</button>
+    </section>
+  </div>
+</div>
+
+<nav class="tabs hidden" id="tabs">
+  <div class="in-tabs">
+    <button data-v="list" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Mi lista<span class="dot"></span></button>
+    <button data-v="partner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.4-9.3-9A5.2 5.2 0 0 1 12 6.7 5.2 5.2 0 0 1 21.3 12C19 16.6 12 21 12 21z"/></svg>Pareja<span class="dot"></span></button>
+    <button data-v="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendario<span class="dot"></span></button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+const KEY = 'octubre-terror-v1';
+const MAX_LIST = 31, MAX_PICKS = 15;
+const PLATFORMS = ['Netflix','HBO Max','Prime Video','Disney+','Otra'];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-3);
+const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+/* ---------- State ---------- */
+function load(){
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.me) return s; } catch(e){}
+  return null;
+}
+let S = load();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ toast('No se pudo guardar'); } }
+function newState(name){
+  return { me:{ id: uid(), name }, mine:{ films:[], updated: Date.now() }, partner:null, calendar:null, seen:{} , year: currentYear() };
+}
+function currentYear(){ const d = new Date(); return d.getMonth() >= 10 ? d.getFullYear() + 1 : d.getFullYear(); }
+function touchMine(){ S.mine.updated = Date.now(); save(); }
+
+/* ---------- Toast ---------- */
+let tt;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('on'), 2200); }
+
+/* ---------- Sheet ---------- */
+function openSheet(html){ $('#sheetBody').innerHTML = html; $('#sheet').classList.add('on'); $('#scrim').classList.add('on'); }
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
+$('#scrim').addEventListener('click', closeSheet);
+
+/* ---------- Tabs ---------- */
+const TITLES = { list:'Mi <em>lista</em>', partner:'La <em>pareja</em>', cal:'El <em>calendario</em>' };
+let view = 'list';
+function go(v){
+  view = v;
+  document.querySelectorAll('section.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('#pageTitle').innerHTML = TITLES[v];
+  window.scrollTo({top:0});
+  render();
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => go(b.dataset.v)));
+
+/* ---------- Helpers ---------- */
+const sagaKey = f => f.saga ? norm(f.saga) : '';
+function allSagas(){
+  const m = new Map();
+  [...S.mine.films, ...(S.partner?.films || [])].forEach(f => { if (f.saga) m.set(norm(f.saga), f.saga); });
+  return [...m.values()];
+}
+function metaHTML(f){
+  const bits = [];
+  if (f.year) bits.push(esc(f.year));
+  if (f.platform) bits.push(`<span class="tag">${esc(f.platform)}</span>`);
+  if (f.saga) bits.push(`<span class="tag saga">${esc(f.saga)}${f.part ? ' · ' + esc(f.part) : ''}</span>`);
+  return bits.join(' ');
+}
+const starSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>';
+const checkSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+/* ---------- Render: Mi lista ---------- */
+let listFilter = 'all';
+document.querySelectorAll('#listFilter .chip').forEach(c => c.addEventListener('click', () => {
+  listFilter = c.dataset.f;
+  document.querySelectorAll('#listFilter .chip').forEach(x => x.classList.toggle('on', x === c));
+  renderList();
+}));
+
+function renderList(){
+  const films = S.mine.films;
+  const picks = films.filter(f => f.pick).length;
+  $('#cntTotal').innerHTML = `${films.length}<small>/${MAX_LIST}</small>`;
+  $('#cntPicks').innerHTML = `${picks}<small>/${MAX_PICKS}</small>`;
+  $('#barTotal').style.width = (films.length / MAX_LIST * 100) + '%';
+  $('#barPicks').style.width = (picks / MAX_PICKS * 100) + '%';
+  $('#btnAdd').disabled = films.length >= MAX_LIST;
+
+  let shown = films.map((f,i) => ({f,i}));
+  if (listFilter === 'picks') shown = shown.filter(x => x.f.pick);
+  if (listFilter === 'rest') shown = shown.filter(x => !x.f.pick);
+  if (listFilter === 'sagas') shown = shown.filter(x => x.f.saga).sort((a,b) => sagaKey(a.f).localeCompare(sagaKey(b.f)) || (a.f.part||99)-(b.f.part||99));
+
+  const ul = $('#myFilms');
+  if (!films.length){
+    ul.innerHTML = `<li class="empty"><div class="big">La lista está vacía</div>Añade la primera peli para empezar a asustarte.</li>`;
+    return;
+  }
+  if (!shown.length){ ul.innerHTML = `<li class="empty">Nada por aquí.</li>`; return; }
+  ul.innerHTML = shown.map(({f,i}) => `
+    <li class="film" data-id="${f.id}">
+      <span class="num">${i+1}</span>
+      <div class="body" data-act="edit"><div class="t">${esc(f.title)}</div><div class="m">${metaHTML(f)}</div></div>
+      <button class="star ${f.pick?'on':''}" data-act="pick" aria-label="Elegir">${starSVG}</button>
+    </li>`).join('');
+}
+$('#myFilms').addEventListener('click', e => {
+  const li = e.target.closest('.film'); if (!li) return;
+  const act = e.target.closest('[data-act]')?.dataset.act;
+  const f = S.mine.films.find(x => x.id === li.dataset.id); if (!f) return;
+  if (act === 'pick'){
+    if (!f.pick && S.mine.films.filter(x=>x.pick).length >= MAX_PICKS){ toast(`Ya tienes ${MAX_PICKS} elegidas`); return; }
+    f.pick = !f.pick; touchMine(); renderList();
+    if (f.pick && f.saga) sagaNudge(f);
+  } else if (act === 'edit') filmForm(f);
+});
+function sagaNudge(f){
+  const sibs = S.mine.films.filter(x => x !== f && sagaKey(x) === sagaKey(f) && !x.pick);
+  if (sibs.length) toast(`Ojo: tienes ${sibs.length} más de “${f.saga}” sin elegir`);
+}
+
+/* ---------- Film form ---------- */
+function filmForm(f){
+  const isNew = !f;
+  f = f || { title:'', year:'', platform:'', saga:'', part:'' };
+  openSheet(`
+    <h2>${isNew ? 'Nueva película' : 'Editar película'}</h2>
+    <form id="ff" class="opt" autocomplete="off">
+      <div><label class="f" for="fTitle">Título</label><input class="in" id="fTitle" value="${esc(f.title)}" placeholder="Ej. Saw" required></div>
+      <div class="row two">
+        <div><label class="f" for="fYear">Año</label><input class="in" id="fYear" inputmode="numeric" maxlength="4" value="${esc(f.year)}" placeholder="2004"></div>
+        <div><label class="f" for="fPlat">Dónde verla</label>
+          <select class="in" id="fPlat"><option value="">—</option>${PLATFORMS.map(p=>`<option ${p===f.platform?'selected':''}>${p}</option>`).join('')}</select></div>
+      </div>
+      <div>
+        <div class="row saga">
+          <div><label class="f" for="fSaga">Saga (opcional)</label><input class="in" id="fSaga" list="sagaList" value="${esc(f.saga)}" placeholder="Ej. Saw"></div>
+          <div><label class="f" for="fPart">Nº</label><input class="in" id="fPart" inputmode="numeric" maxlength="2" value="${esc(f.part)}" placeholder="1"></div>
+        </div>
+        <datalist id="sagaList">${allSagas().map(s=>`<option value="${esc(s)}">`).join('')}</datalist>
+        <p class="hint">Escribe el mismo nombre de saga en cada parte (también sirve si tu pareja tiene otra parte). Se verán seguidas y en este orden.</p>
+      </div>
+      <button class="btn block" type="submit">${isNew ? 'Añadir a mi lista' : 'Guardar'}</button>
+      ${isNew ? '' : '<button class="btn ghost block" type="button" id="fDel" style="color:var(--blood)">Eliminar</button>'}
+    </form>`);
+  const fSaga = $('#fSaga'), fTitle = $('#fTitle');
+  if (isNew) setTimeout(() => fTitle.focus(), 280);
+  // Suggest saga if title matches existing saga name
+  fTitle.addEventListener('blur', () => {
+    if (fSaga.value) return;
+    const t = norm(fTitle.value);
+    const hit = allSagas().find(s => t.startsWith(norm(s) + ' ') || t === norm(s));
+    if (hit){ fSaga.value = hit; toast(`Asignada a la saga “${hit}”`); }
+  });
+  $('#ff').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = fTitle.value.trim(); if (!title) return;
+    const data = { title, year: $('#fYear').value.trim(), platform: $('#fPlat').value, saga: fSaga.value.trim(), part: parseInt($('#fPart').value,10) || '' };
+    if (isNew){
+      if (S.mine.films.length >= MAX_LIST){ toast('Máximo 31 películas'); return; }
+      S.mine.films.push({ id: uid(), pick:false, ...data });
+    } else Object.assign(f, data);
+    touchMine(); closeSheet(); renderList(); toast(isNew ? 'Añadida' : 'Guardada');
+  });
+  $('#fDel')?.addEventListener('click', () => {
+    if (!confirm(`¿Eliminar “${f.title}”?`)) return;
+    S.mine.films = S.mine.films.filter(x => x.id !== f.id); touchMine(); closeSheet(); renderList();
+  });
+}
+$('#btnAdd').addEventListener('click', () => filmForm(null));
+
+/* ---------- Share codes ---------- */
+function b64enc(str){ const bytes = new TextEncoder().encode(str); let bin=''; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function b64dec(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while (s.length % 4) s += '='; const bin = atob(s); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
+function packFilm(f){ return [f.id, f.title, f.year||'', f.platform||'', f.saga||'', f.part||'', f.pick?1:0]; }
+function unpackFilm(a){ return { id:a[0], title:a[1], year:a[2], platform:a[3], saga:a[4], part:a[5], pick: !!a[6] }; }
+function makeCode(){
+  const payload = { v:1, id:S.me.id, n:S.me.name, u:S.mine.updated, f:S.mine.films.map(packFilm), c:S.calendar, s:S.seen, y:S.year };
+  return 'OCT31:' + b64enc(JSON.stringify(payload));
+}
+async function shareCode(title){
+  const code = makeCode();
+  const text = `${title}\n\nAbre “Octubre”, ve a Pareja y pega este código:\n\n${code}`;
+  try {
+    if (navigator.share){ await navigator.share({ text }); return; }
+  } catch(e){ if (e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(code); toast('Código copiado'); }
+  catch(e){ openSheet(`<h2>Tu código</h2><p class="sub">Cópialo y envíalo:</p><textarea class="in mt12" readonly>${esc(code)}</textarea>`); }
+}
+$('#btnShareMine').addEventListener('click', () => {
+  const picks = S.mine.films.filter(f=>f.pick).length;
+  if (!S.mine.films.length){ toast('Primero añade películas'); return; }
+  shareCode(`🎃 Lista de terror de ${S.me.name} (${picks}/15 elegidas)`);
+});
+$('#btnShareCal').addEventListener('click', () => shareCode(`🩸 Calendario de octubre de ${S.me.name}`));
+
+function importCode(raw){
+  const m = String(raw).match(/OCT31:([A-Za-z0-9_-]+)/);
+  if (!m){ toast('Código no válido'); return false; }
+  let p; try { p = JSON.parse(b64dec(m[1])); } catch(e){ toast('Código dañado'); return false; }
+  if (p.id === S.me.id){ toast('Ese es tu propio código 🙂'); return false; }
+  if (S.partner && S.partner.id !== p.id && !confirm(`Vas a reemplazar a ${S.partner.name} por ${p.n}. ¿Seguir?`)) return false;
+  S.partner = { id:p.id, name:p.n, films:(p.f||[]).map(unpackFilm), updated:p.u, imported: Date.now() };
+  // Seen marks: merge
+  if (p.s) Object.keys(p.s).forEach(k => { if (p.s[k]) S.seen[k] = p.s[k]; });
+  let msg = `Lista de ${p.n} importada`;
+  if (p.c && (!S.calendar || (p.c.at || 0) > (S.calendar.at || 0))){ S.calendar = p.c; if (p.y) S.year = p.y; msg += ' + calendario'; }
+  save(); toast(msg); return true;
+}
+$('#btnImport').addEventListener('click', () => { if (importCode($('#importBox').value)) { $('#importBox').value=''; render(); } });
+$('#btnPaste').addEventListener('click', async () => {
+  try { $('#importBox').value = await navigator.clipboard.readText(); } catch(e){ toast('Mantén pulsado el cuadro y elige “Pegar”'); }
+});
+
+/* ---------- Render: Pareja ---------- */
+function renderPartner(){
+  const P = S.partner;
+  $('#partnerEmpty').classList.toggle('hidden', !!P);
+  $('#partnerBox').classList.toggle('hidden', !P);
+  if (!P) return;
+  $('#pAvatar').textContent = (P.name||'?').trim().charAt(0).toUpperCase();
+  $('#pName').textContent = P.name;
+  const picks = P.films.filter(f=>f.pick), rest = P.films.filter(f=>!f.pick);
+  $('#pMeta').textContent = `${P.films.length} en su lista · actualizado ${new Date(P.updated).toLocaleDateString('es',{day:'numeric',month:'short'})}`;
+  $('#pPickCnt').textContent = `${picks.length}/${MAX_PICKS}`;
+  const li = (f,i) => `<li class="film"><span class="num">${i+1}</span><div class="body"><div class="t">${esc(f.title)}</div><div class="m">${metaHTML(f)}</div></div></li>`;
+  $('#pFilms').innerHTML = picks.length ? picks.map(li).join('') : `<li class="empty">Aún no ha elegido ninguna.</li>`;
+  $('#pRest').innerHTML = rest.length ? rest.map(li).join('') : `<li class="empty">No hay más.</li>`;
+}
+
+/* ---------- Calendar generation ---------- */
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shuffle(arr, rnd){ const a = arr.slice(); for (let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+const filmKey = f => norm(f.title) + '|' + (f.year||'');
+
+function buildPool(){
+  const me = S.me, P = S.partner;
+  const entries = new Map(); // key -> entry
+  const add = (f, owner, extra) => {
+    const k = filmKey(f);
+    if (entries.has(k)){
+      const e = entries.get(k);
+      if (!extra && e.extra){ e.extra = false; e.owner = owner; }
+      else if (!extra && !e.extra && e.owner !== owner) e.owner = 'both';
+      if (!e.saga && f.saga){ e.saga = f.saga; e.part = f.part; }
+      return;
+    }
+    entries.set(k, { k, title:f.title, year:f.year, platform:f.platform, saga:f.saga, part:f.part, owner, extra });
+  };
+  S.mine.films.filter(f=>f.pick).forEach(f => add(f, me.id, false));
+  (P?.films||[]).filter(f=>f.pick).forEach(f => add(f, P.id, false));
+  const picked = [...entries.values()];
+  const extras = [];
+  const tmp = new Map();
+  S.mine.films.filter(f=>!f.pick).forEach(f => { if (!entries.has(filmKey(f))) tmp.set(filmKey(f), {k:filmKey(f), title:f.title, year:f.year, platform:f.platform, saga:f.saga, part:f.part, owner:me.id, extra:true}); });
+  (P?.films||[]).filter(f=>!f.pick).forEach(f => { const k = filmKey(f); if (!entries.has(k)){ if (tmp.has(k)) tmp.get(k).owner = 'both'; else tmp.set(k, {k, title:f.title, year:f.year, platform:f.platform, saga:f.saga, part:f.part, owner:P.id, extra:true}); } });
+  extras.push(...tmp.values());
+  return { picked, extras };
+}
+function toUnits(list){
+  const sagas = new Map(), units = [];
+  list.forEach(e => {
+    const sk = e.saga ? norm(e.saga) : '';
+    if (!sk){ units.push([e]); return; }
+    if (!sagas.has(sk)){ const u = []; sagas.set(sk, u); units.push(u); }
+    sagas.get(sk).push(e);
+  });
+  units.forEach(u => u.sort((x,y) => (x.part||999)-(y.part||999) || (parseInt(x.year)||9999)-(parseInt(y.year)||9999) || x.title.localeCompare(y.title)));
+  return units;
+}
+function unitOwner(u){ const o = new Set(u.map(e=>e.owner)); return o.size === 1 ? [...o][0] : 'both'; }
+function streakScore(units){
+  let s = 0; for (let i=1;i<units.length;i++){ const a = unitOwner(units[i-1]), b = unitOwner(units[i]); if (a === b && a !== 'both') s++; } return s;
+}
+function generate(seed){
+  const rnd = mulberry32(seed);
+  const { picked, extras } = buildPool();
+  let units = toUnits(picked);
+  // Fill up to 31 nights with "comodines" from the non-chosen films (whole sagas only if they fit)
+  let count = units.reduce((n,u)=>n+u.length,0);
+  const merged = new Set(picked.map(e => e.saga ? norm(e.saga) : null).filter(Boolean));
+  const extraUnits = shuffle(toUnits(extras), rnd).filter(u => {
+    const sk = u[0].saga ? norm(u[0].saga) : ''; return !sk || !merged.has(sk);  // don't split a saga already chosen
+  });
+  for (const u of extraUnits){ if (count >= 31) break; if (count + u.length <= 31){ units.push(u); count += u.length; } }
+  // Random order; among many random shuffles keep one that avoids long streaks of the same person
+  let best = null, bestScore = Infinity;
+  for (let i=0;i<400;i++){ const cand = shuffle(units, rnd); const sc = streakScore(cand); if (sc < bestScore){ best = cand; bestScore = sc; if (sc === 0) break; } }
+  const flat = (best || []).flat().slice(0, 31);
+  const days = flat.map(e => ({ ...e, n: e.saga ? (units.find(u=>u.includes(e))||[]).length : 0 }));
+  return { seed, at: Date.now(), days };
+}
+
+function calStatusHTML(){
+  const mp = S.mine.films.filter(f=>f.pick).length;
+  const pp = S.partner ? S.partner.films.filter(f=>f.pick).length : null;
+  const row = (name, n, cls) => `<div class="person" style="margin:6px 0"><div class="avatar ${cls}" style="width:34px;height:34px;font-size:17px">${esc((name||'?').charAt(0).toUpperCase())}</div><div style="flex:1"><div style="font-weight:500">${esc(name)}</div><div class="s">${n===null?'Falta importar su código':n+' de 15 elegidas'}</div></div>${n===15?`<span class="check on">${checkSVG}</span>`:''}</div>`;
+  return row(S.me.name, mp, 'av-a') + row(S.partner?.name || 'Tu pareja', pp, 'av-b') +
+    `<p class="hint">Puedes generar aunque falten elegidas: los huecos se rellenan con películas no elegidas de sus listas (“comodines”).</p>`;
+}
+
+/* ---------- Render: Calendario ---------- */
+let swapFrom = null;
+const DOW = ['dom','lun','mar','mié','jue','vie','sáb'];
+function oc(o){ return o === 'both' ? 'both' : o === S.me.id ? 'a' : 'b'; }
+function ownerName(o){ const c = oc(o); return c === 'a' ? S.me.name : c === 'b' ? (S.partner?.name || 'Pareja') : 'Los dos'; }
+function whoTag(e){ if (e.extra) return `<span class="who x">Comodín</span>`; return `<span class="who ${oc(e.owner)}">${esc(ownerName(e.owner))}</span>`; }
+function seenKey(i, e){ return (i+1) + '|' + e.k; }
+
+function renderCal(){
+  const C = S.calendar;
+  $('#calEmpty').classList.toggle('hidden', !!C);
+  $('#calBox').classList.toggle('hidden', !C);
+  $('#btnGenerate').classList.toggle('hidden', !!C);
+  if (!C){ $('#calStatus').innerHTML = calStatusHTML(); return; }
+  const y = S.year;
+  $('#calYear').textContent = y;
+  const days = C.days;
+  const seenN = days.filter((e,i) => S.seen[seenKey(i,e)]).length;
+  $('#calProgress').textContent = `${seenN}/${days.length} vistas`;
+
+  // Legend
+  $('#legend').innerHTML = `<span><i class="sw" style="background:var(--a)"></i>${esc(S.me.name)}</span><span><i class="sw" style="background:var(--b)"></i>${esc(S.partner?.name||'Pareja')}</span><span><i class="sw" style="background:var(--both)"></i>Los dos</span><span><i class="sw" style="background:var(--faint)"></i>Comodín</span>`;
+
+  // Tonight
+  const now = new Date();
+  let idx = (now.getFullYear() === y && now.getMonth() === 9) ? now.getDate()-1 : (now < new Date(y,9,1) ? 0 : -1);
+  if (idx >= 0 && days[idx]){
+    const e = days[idx]; const d = new Date(y,9,idx+1);
+    const label = (now.getMonth()===9 && now.getFullYear()===y) ? 'Esta noche' : 'Primera noche';
+    $('#tonight').innerHTML = `<span class="ghost-n">${idx+1}</span><div class="date">${label} · ${DOW[d.getDay()]} ${idx+1} oct</div>
+      <div class="ft">${esc(e.title)}</div><div class="fm">${[e.year, e.platform].filter(Boolean).map(esc).join(' · ')} ${e.saga?`· <span style="color:var(--blood)">${esc(e.saga)}${e.part?' '+esc(e.part):''}</span>`:''}</div>
+      <div class="mt12">${whoTag(e)}</div>`;
+    $('#tonight').classList.remove('hidden');
+    $('#tonight').onclick = () => dayDetail(idx);
+  } else if (idx === -1){
+    $('#tonight').innerHTML = `<div class="date">Octubre terminó</div><div class="ft">${seenN} películas vistas</div><div class="fm">Hasta el próximo año 🎃</div>`;
+  }
+
+  // Grid (Monday first)
+  const first = new Date(y,9,1).getDay(); const offset = (first + 6) % 7;
+  let html = '';
+  for (let i=0;i<offset;i++) html += `<div class="day blank"></div>`;
+  for (let d=1; d<=31; d++){
+    const e = days[d-1]; const seen = e && S.seen[seenKey(d-1,e)];
+    const isToday = now.getFullYear()===y && now.getMonth()===9 && now.getDate()===d;
+    const nextSame = e && e.saga && days[d] && days[d].saga && norm(days[d].saga)===norm(e.saga);
+    const cls = ['day', seen?'seen':'', isToday?'today':'', d===31?'halloween':'', nextSame?'sagal':'', swapFrom===d-1?'swap-src':''].join(' ');
+    const col = e ? (e.extra ? 'var(--faint)' : `var(--${oc(e.owner)})`) : 'transparent';
+    html += `<button class="${cls}" data-i="${d-1}"><span class="d">${d}</span>${e?`<i class="own" style="background:${d===31?'#fff':col}"></i><span class="mt">${esc(e.title)}</span>`:'<span class="mt">Libre</span>'}</button>`;
+  }
+  $('#grid').innerHTML = html;
+  $('#swapHint').textContent = swapFrom !== null ? `Toca otro día para intercambiarlo con el ${swapFrom+1}. (Toca el mismo para cancelar)` : 'Toca un día para ver detalles, marcarla como vista o moverla.';
+
+  // Agenda
+  $('#agenda').innerHTML = days.map((e,i) => {
+    const d = new Date(y,9,i+1); const seen = S.seen[seenKey(i,e)];
+    return `<li class="${seen?'seen':''}" data-i="${i}">
+      <div><div class="dn">${i+1}</div><div class="dw">${DOW[d.getDay()]}</div></div>
+      <div class="b" data-act="open"><div class="t">${esc(e.title)}</div><div class="m">${whoTag(e)} ${metaHTML(e)}</div></div>
+      <button class="check ${seen?'on':''}" data-act="seen" aria-label="Vista">${checkSVG}</button></li>`;
+  }).join('');
+}
+$('#grid').addEventListener('click', e => {
+  const b = e.target.closest('.day[data-i]'); if (!b) return; const i = +b.dataset.i;
+  if (swapFrom !== null){
+    if (swapFrom !== i && S.calendar.days[i]){
+      const D = S.calendar.days; [D[swapFrom], D[i]] = [D[i], D[swapFrom]];
+      S.calendar.at = Date.now(); save();
+      if (brokenSagas().length) toast('Ojo: alguna saga quedó separada'); else toast(`Intercambiados ${swapFrom+1} y ${i+1}`);
+    }
+    swapFrom = null; renderCal(); return;
+  }
+  if (S.calendar.days[i]) dayDetail(i);
+});
+$('#agenda').addEventListener('click', e => {
+  const li = e.target.closest('li[data-i]'); if (!li) return; const i = +li.dataset.i;
+  const act = e.target.closest('[data-act]')?.dataset.act;
+  if (act === 'seen') toggleSeen(i); else dayDetail(i);
+});
+function toggleSeen(i){
+  const e = S.calendar.days[i]; const k = seenKey(i,e);
+  if (S.seen[k]) delete S.seen[k]; else S.seen[k] = Date.now();
+  save(); renderCal();
+}
+function brokenSagas(){
+  const D = S.calendar.days, bad = new Set(), groups = {};
+  D.forEach((e,i) => { if (e.saga){ const k = norm(e.saga); (groups[k] = groups[k] || []).push(i); } });
+  Object.entries(groups).forEach(([k,ix]) => { for (let j=1;j<ix.length;j++) if (ix[j] !== ix[j-1]+1) bad.add(k); });
+  return [...bad];
+}
+function dayDetail(i){
+  const e = S.calendar.days[i]; const d = new Date(S.year,9,i+1); const seen = !!S.seen[seenKey(i,e)];
+  const sagaAll = e.saga ? S.calendar.days.map((x,j)=>({x,j})).filter(o => o.x.saga && norm(o.x.saga)===norm(e.saga)) : [];
+  openSheet(`
+    <div class="kicker" style="color:var(--blood)">${DOW[d.getDay()]} ${i+1} de octubre${i===30?' · Halloween 🎃':''}</div>
+    <h2 class="mt8">${esc(e.title)}</h2>
+    <div class="m sub" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${whoTag(e)} ${metaHTML(e)}</div>
+    ${sagaAll.length>1?`<div class="note mt16"><b>Saga ${esc(e.saga)}:</b> ${sagaAll.map(o=>`${esc(o.x.title)} (día ${o.j+1})`).join(' → ')}</div>`:''}
+    ${e.extra?`<div class="note mt12">Es un <b>comodín</b>: no estaba entre las elegidas, rellena un hueco del mes.</div>`:''}
+    <div class="opt">
+      <button class="btn block ${seen?'ghost':''}" id="dSeen">${seen?'Desmarcar como vista':'Marcar como vista ✓'}</button>
+      <button class="btn ghost block" id="dSwap">Intercambiar con otro día</button>
+    </div>`);
+  $('#dSeen').onclick = () => { toggleSeen(i); closeSheet(); };
+  $('#dSwap').onclick = () => { swapFrom = i; closeSheet(); renderCal(); document.getElementById('grid').scrollIntoView({behavior:'smooth', block:'center'}); };
+}
+
+$('#btnGenerate').addEventListener('click', () => {
+  const { picked } = buildPool();
+  if (!picked.length){ toast('Aún no hay películas elegidas'); return; }
+  if (!S.partner && !confirm('Todavía no importaste la lista de tu pareja. ¿Generar solo con la tuya?')) return;
+  S.calendar = generate((Math.random()*2**32)>>>0); S.seen = {}; save(); renderCal();
+  toast('¡Calendario listo! Compártelo con tu pareja');
+});
+$('#btnReroll').addEventListener('click', () => {
+  if (!confirm('Se sorteará de nuevo todo el mes con las listas actuales y se borrarán las marcas de “vista”. ¿Seguir?')) return;
+  S.calendar = generate((Math.random()*2**32)>>>0); S.seen = {}; swapFrom = null; save(); renderCal(); toast('Nuevo sorteo');
+});
+
+/* ---------- Settings ---------- */
+$('#btnSettings').addEventListener('click', () => {
+  openSheet(`
+    <h2>Ajustes</h2>
+    <div class="opt">
+      <div><label class="f" for="sName">Tu nombre</label><input class="in" id="sName" value="${esc(S.me.name)}"></div>
+      <div><label class="f" for="sYear">Año del calendario</label><input class="in" id="sYear" inputmode="numeric" value="${S.year}"></div>
+      <button class="btn block" id="sSave">Guardar</button>
+      <div class="rule" style="margin:4px 0"></div>
+      <div class="note"><b>Cómo funciona la sincronización:</b> no hay servidor. Cada uno guarda sus datos en su iPhone y se los pasan con el botón “Compartir mi código” (por WhatsApp, por ejemplo). El código lleva tu lista, el calendario y las pelis vistas.</div>
+      <button class="btn ghost block" id="sForget">Olvidar a mi pareja</button>
+      <button class="btn ghost block" id="sReset" style="color:var(--blood)">Borrar todo</button>
+    </div>`);
+  $('#sSave').onclick = () => { const n = $('#sName').value.trim(); const y = parseInt($('#sYear').value,10); if (n) S.me.name = n; if (y>2000 && y<2100) S.year = y; touchMine(); closeSheet(); render(); toast('Guardado'); };
+  $('#sForget').onclick = () => { if (confirm('¿Quitar la lista importada de tu pareja?')){ S.partner = null; save(); closeSheet(); render(); } };
+  $('#sReset').onclick = () => { if (confirm('Se borrará tu lista, la de tu pareja y el calendario de este iPhone. ¿Seguro?')){ localStorage.removeItem(KEY); location.reload(); } };
+});
+
+/* ---------- Boot ---------- */
+function render(){
+  if (!S) return;
+  $('#kicker').textContent = `Bitácora de terror · ${S.me.name}${S.partner ? ' & ' + S.partner.name : ''}`;
+  if (view === 'list') renderList();
+  if (view === 'partner') renderPartner();
+  if (view === 'cal') renderCal();
+}
+function boot(){
+  if (!S){
+    $('#onboard').classList.remove('hidden');
+    $('#obGo').onclick = () => { const n = $('#obName').value.trim(); if (!n){ $('#obName').focus(); return; } S = newState(n); save(); boot(); };
+    $('#obName').addEventListener('keydown', e => { if (e.key === 'Enter') $('#obGo').click(); });
+    return;
+  }
+  $('#onboard').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+  $('#tabs').classList.remove('hidden');
+  // Code arriving through the URL (#OCT31:...)
+  if (location.hash.includes('OCT31:')){ if (importCode(decodeURIComponent(location.hash))) view = 'partner'; history.replaceState(null,'',location.pathname); }
+  go(view);
+}
+boot();
+
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+})();
+</script>
+</body>
+</html>
